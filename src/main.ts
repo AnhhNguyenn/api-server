@@ -1,4 +1,3 @@
-
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
@@ -13,16 +12,17 @@ async function bootstrap() {
 
   // CORS
   app.enableCors({
-    origin: '*', // Replace with your frontend URL in production
+    origin: '*', // Lưu ý: Nên thay bằng domain frontend thực tế khi lên production để bảo mật hơn
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    credentials: true,
   });
 
   // Global Validation Pipe
   app.useGlobalPipes(
     new ValidationPipe({
-      whitelist: true, // Strip away properties that do not have any decorators
-      forbidNonWhitelisted: true, // Throw an error if non-whitelisted values are provided
-      transform: true, // Automatically transform payloads to be objects typed according to their DTO classes
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      transform: true,
     }),
   );
 
@@ -36,6 +36,9 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api-docs', app, document);
 
-  await app.listen(3000);
+  // --- SỬA QUAN TRỌNG Ở ĐÂY ---
+  // Vercel cung cấp port qua process.env.PORT. 
+  // Nếu không có (chạy local), nó mới dùng 3000.
+  await app.listen(process.env.PORT || 3000); 
 }
 bootstrap();
