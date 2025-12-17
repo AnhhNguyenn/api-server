@@ -11,11 +11,12 @@ async function bootstrap() {
   app.use(helmet());
 
   // CORS
-  app.enableCors({
-    origin: '*', // Lưu ý: Nên thay bằng domain frontend thực tế khi lên production để bảo mật hơn
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-    credentials: true,
-  });
+app.enableCors({
+  origin: true, // Cho phép tất cả các domain gọi vào
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+  credentials: true,
+  allowedHeaders: 'Content-Type, Accept, Authorization',
+});
 
   // Global Validation Pipe
   app.useGlobalPipes(
