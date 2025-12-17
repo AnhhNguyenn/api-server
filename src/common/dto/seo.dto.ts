@@ -1,6 +1,16 @@
+import { IsString, IsOptional } from 'class-validator';
 
 export class SeoDto {
-  readonly title: string;
-  readonly description: string;
-  readonly keywords: string;
+  @IsOptional()
+  @IsString()
+  title?: string;
+
+  @IsOptional()
+  @IsString()
+  description?: string;
+
+  @IsOptional()
+  @IsString()
+  keywords?: string;
 }
+
