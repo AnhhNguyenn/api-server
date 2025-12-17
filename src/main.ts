@@ -7,17 +7,24 @@ import helmet from 'helmet';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // Security: Helmet
-  app.use(helmet());
+  // 1. Cấu hình Helmet (Phải cấu hình lại để không chặn Cross-Origin)
+  app.use(helmet({
+    crossOriginResourcePolicy: { policy: "cross-origin" },
+    crossOriginEmbedderPolicy: false,
+  }));
 
-  // CORS
-app.enableCors({
-    origin: 'https://fabric-ui-pi.vercel.app',
+  // 2. Cấu hình CORS (Mở rộng thêm localhost để bạn tiện test cả 2 nơi)
+  app.enableCors({
+    origin: [
+      'https://fabric-ui-pi.vercel.app', 
+      'http://localhost:3000'
+    ],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
+    allowedHeaders: 'Content-Type, Authorization, X-Requested-With, Accept',
   });
 
-  // Global Validation Pipe
+  // 3. Global Validation Pipe
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -26,7 +33,7 @@ app.enableCors({
     }),
   );
 
-  // Swagger API Documentation
+  // Swagger
   const config = new DocumentBuilder()
     .setTitle('Headless CMS API')
     .setDescription('API for managing website content')
@@ -36,9 +43,9 @@ app.enableCors({
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api-docs', app, document);
 
-  // --- SỬA QUAN TRỌNG Ở ĐÂY ---
-  // Vercel cung cấp port qua process.env.PORT. 
-  // Nếu không có (chạy local), nó mới dùng 3000.
-  await app.listen(process.env.PORT || 3000); 
+  // 4. Lắng nghe Port từ Vercel
+  const port = process.env.PORT || 3000;
+  await app.listen(port);
+  console.log(`Application is running on: ${port}`);
 }
 bootstrap();
