@@ -12,10 +12,10 @@ async function bootstrap() {
 
   // CORS
 app.enableCors({
-  origin: true, // Cho phép tất cả các domain gọi vào
+  origin: true, // Cho phép tất cả các nguồn gọi vào
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
   credentials: true,
-  allowedHeaders: 'Content-Type, Accept, Authorization',
+  allowedHeaders: 'Content-Type, Accept, Authorization, X-Requested-With',
 });
 
   // Global Validation Pipe
