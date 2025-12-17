@@ -16,7 +16,7 @@ async function bootstrap() {
   // 2. Cấu hình CORS (Mở rộng thêm localhost để bạn tiện test cả 2 nơi)
   app.enableCors({
     origin: [
-      'https://fabric-ui-pi.vercel.app', 
+      'https://fabric-ui-iota.vercel.app', 
       'http://localhost:3000'
     ],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
