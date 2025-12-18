@@ -65,7 +65,6 @@ export class ProductsController {
     }
     return this.productsService.update(id, updateProductDto, imageUrls);
   }
-
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
